@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=360, user-scalable=no">
+    <title>Selamat Ulang Tahun Roblox!</title>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <style>
+      * { box-sizing: border-box; }
+
+      html, body {
+        margin: 0;
+        padding: 0;
+        background: #1f1f1f;
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+        font-family: 'Press Start 2P', cursive;
+        color: white;
+        height: 100vh;
+      }
+
+      .mobile-wrapper {
+        width: 360px;
+        min-height: 100vh;
+        background: linear-gradient(to bottom, #232526, #414345);
+        overflow-x: hidden;
+        position: relative;
+        box-shadow: 0 0 20px rgba(0,0,0,0.5);
+      }
+
+      .container {
+        padding: 20px;
+        text-align: center;
+      }
+
+      h1 {
+        font-size: 1.2em;
+        color: #FFD700;
+        text-shadow: 2px 2px #000;
+        margin-top: 20px;
+      }
+
+      p {
+        font-size: 0.7em;
+        margin: 10px 0;
+      }
+
+      .roblox-img {
+        width: 150px;
+        margin: 20px auto;
+        display: block;
+        animation: float 3s ease-in-out infinite;
+      }
+
+      .gallery {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        margin-top: 20px;
+      }
+
+      .gallery img {
+        width: 100%;
+        border-radius: 8px;
+        border: 2px solid #fff;
+        transition: transform 0.2s;
+      }
+
+      .gallery img:hover {
+        transform: scale(1.05);
+      }
+
+      .confetti {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        background: url('https://cdn.pixabay.com/photo/2017/08/30/07/52/confetti-2699493_1280.png') repeat;
+        background-size: cover;
+        opacity: 0.25;
+        z-index: 0;
+        animation: slideDown 20s linear infinite;
+      }
+
+      .btn-special, .btn-secret {
+        margin-top: 20px;
+        background: #FFD700;
+        color: #000;
+        border: none;
+        padding: 12px 18px;
+        font-size: 0.7em;
+        font-family: 'Press Start 2P', cursive;
+        cursor: pointer;
+        border-radius: 8px;
+        box-shadow: 0 4px 0 #000;
+        transition: all 0.2s ease-in-out;
+      }
+
+      .btn-special:hover, .btn-secret:hover {
+        background: #fff176;
+      }
+
+      .credit {
+        font-size: 0.5em;
+        margin-top: 30px;
+        color: #ccc;
+      }
+
+      @keyframes float {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(-8px); }
+      }
+
+      @keyframes slideDown {
+        0% { background-position: 0 -100px; }
+        100% { background-position: 0 1000px; }
+      }
+
+      .popup-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0,0,0,0.8);
+        display: none;
+        justify-content: center;
+        align-items: center;
+        z-index: 999;
+      }
+
+      .popup-content {
+        background: #fff;
+        color: #000;
+        padding: 20px;
+        border-radius: 12px;
+        max-width: 300px;
+        text-align: center;
+        box-shadow: 0 0 20px #000;
+        animation: popIn 0.4s ease;
+      }
+
+      .popup-content h2 {
+        font-size: 1em;
+        margin-bottom: 10px;
+      }
+
+      .popup-content p {
+        font-size: 0.7em;
+        line-height: 1.6em;
+      }
+
+      .popup-content button {
+        margin: 10px 5px 0;
+        padding: 8px 12px;
+        font-family: 'Press Start 2P', cursive;
+        background: #ff4081;
+        color: white;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+      }
+
+      @keyframes popIn {
+        from { transform: scale(0.7); opacity: 0; }
+        to { transform: scale(1); opacity: 1; }
+      }
+
+      .flowers {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: 1000;
+        display: none;
+      }
+
+      .flower {
+        position: absolute;
+        top: -50px;
+        width: 32px;
+        height: 32px;
+        background: url('https://i.ibb.co/f4QLqwJ/flower.png') no-repeat center;
+        background-size: contain;
+        animation: fall 5s linear forwards;
+        opacity: 0.8;
+        pointer-events: none;
+      }
+
+      @keyframes fall {
+        to {
+          transform: translateY(100vh) rotate(720deg);
+          opacity: 0;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="mobile-wrapper">
+      <div class="confetti"></div>
+      <div id="flowers" class="flowers">
+        <img src="/picture/asha.png" 
+          alt="Roblox Icon" 
+          class="roblox-img"
+          style="width: 20px; height: 20px; border-radius: 50%; object-fit: cover;"
+        >
+      </div>
+      <div class="container">
+        <h1>🎂 Selamat Ulang Tahun Asha !</h1>
+        <div style="display: flex; gap: 10px; align-items: center;">
+          <img src="/picture/asha.png" 
+            alt="Roblox Icon" 
+            class="roblox-img"
+            style="width: 70px; height: 70px; border-radius: 50%; object-fit: cover;"
+          >
+          <img src="/picture/icon.png" 
+            alt="Roblox Icon" 
+            class="roblox-img"
+            style="width: 70px; height: 70px; border-radius: 50%; object-fit: cover;"
+          >
+          <img src="/picture/ipul.png" 
+            alt="Roblox Icon" 
+            class="roblox-img"
+            style="width: 70px; height: 70px; border-radius: 50%; object-fit: cover;"
+          >
+        </div>
+        <p>Semoga harimu menyenangkan dan penuh petualangan seperti di dunia Roblox!</p>
+        <p>Berikut beberapa kenangan seru yang pernah kita mainkan bersama:</p>
+
+        <div class="gallery">
+          <img src="/picture/1.png">
+          <img src="/picture/2.png">
+          <img src="/picture/3.png">
+          <img src="/picture/4.png">
+          <img src="/picture/5.png">
+          <img src="/picture/6.png">
+          <img src="/picture/7.png">
+          <img src="/picture/8.png">
+          <img src="/picture/9.png">
+          <img src="/picture/10.png">
+          <img src="/picture/11.png">
+          <img src="/picture/12.png">
+          <img src="/picture/13.png">
+          <img src="/picture/14.png">
+          <img src="/picture/15.png">
+          <img src="/picture/16.png">
+          <img src="/picture/17.png">
+          <img src="/picture/18.png">
+          <img src="/picture/19.png">
+          <img src="/picture/20.png">
+          <img src="/picture/21.png">
+          <img src="/picture/22.png">
+          <img src="/picture/23.png">
+          <img src="/picture/24.png">
+          <img src="/picture/25.png">
+          <img src="/picture/26.png">
+          <img src="/picture/27.png">
+          <img src="/picture/28.png">
+          <img src="/picture/29.png">
+          <img src="/picture/30.png">
+          <img src="/picture/31.png">
+          <img src="/picture/32.png">
+          <img src="/picture/33.png">
+          <img src="/picture/34.png">
+          <img src="/picture/35.png">
+          <img src="/picture/36.png">
+          <img src="/picture/37.png">
+          <img src="/picture/38.png">
+        </div>
+
+        <button class="btn-special" onclick="showPopup('popup1')">🎁 Lihat Pesan Spesial</button>
+      </div>
+
+      <div style="height: 800px;" style="display: none;"></div>
+
+      <div class="container" style="display: none;">
+        <div class="credit">Dibuat spesial dengan cinta dan Roblox 🎮</div>
+        <button class="btn-secret" onclick="showPopup('popup2')">❤️ Rahasia</button>
+      </div>
+    </div>
+
+    <!-- Popup 1 -->
+    <div class="popup-overlay" id="popup1">
+      <div class="popup-content">
+        <h2>🎈 Pesan Spesial!</h2>
+        <p>Terima kasih banyak sudah menjadi teman terbaikku di Roblox! 🌟 Setiap momen bermain bareng kamu selalu penuh tawa, keseruan, dan cerita seru yang nggak pernah terlupakan. Semoga kita terus bisa seru-seruan bareng, bikin kenangan baru, dan tetap jadi tim paling luar biasa! 🎮✨</p>
+        <button onclick="closePopup('popup1')">Tutup</button>
+      </div>
+    </div>
+
+    <!-- Popup 2 -->
+    <div class="popup-overlay" id="popup2">
+      <div class="popup-content">
+        <h2>❤️ Rahasia...</h2>
+        <p>Mau nggak... jadi pacarku? 😳</p>
+        <button onclick="showFlowers()">Yes</button>
+        <button onclick="closePopup('popup2')">Tidak</button>
+      </div>
+    </div>
+
+    <script>
+      function showPopup(id) {
+        document.getElementById(id).style.display = 'flex';
+      }
+
+      function closePopup(id) {
+        document.getElementById(id).style.display = 'none';
+      }
+
+      function showFlowers() {
+        closePopup('popup2');
+        const flowersContainer = document.getElementById('flowers');
+        flowersContainer.innerHTML = '';
+        flowersContainer.style.display = 'block';
+
+        for (let i = 0; i < 1000; i++) {
+          const flower = document.createElement('div');
+          flower.className = 'flower';
+
+          const size = 24 + Math.random() * 16;
+          flower.style.width = flower.style.height = `${size}px`;
+          flower.style.left = Math.random() * window.innerWidth + 'px';
+          flower.style.animationDelay = Math.random() * 2 + 's';
+          flower.style.transform = `rotate(${Math.random() * 360}deg)`;
+
+          flowersContainer.appendChild(flower);
+        }
+
+        setTimeout(() => {
+          flowersContainer.style.display = 'none';
+          flowersContainer.innerHTML = '';
+        }, 6000);
+      }
+    </script>
+  </body>
+</html>
