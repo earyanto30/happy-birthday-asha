@@ -198,6 +198,72 @@
           opacity: 0;
         }
       }
+
+      /* Floating button (tombol kecil) */
+      .audio-fab{
+        position: fixed; right: 18px; bottom: 18px;
+        width: 44px; height: 44px; line-height: 44px; text-align:center;
+        border-radius: 999px; background:rgba(255, 188, 188, 0.9); color:#fff; cursor:pointer;
+        box-shadow: 0 10px 20px rgba(13,110,253,.35);
+        font-size: 20px; user-select:none; z-index: 9999;
+        transition: transform .15s ease, box-shadow .2s ease, opacity .2s ease;
+      }
+      .audio-fab:hover{ transform: translateY(-1px); box-shadow:0 12px 22px rgba(13,110,253,.45); }
+
+      /* Panel player */
+      .audio-panel{
+        position: fixed; right: 18px; bottom: 18px;
+        width: 320px; padding: 12px; border-radius: 16px;
+        background: rgba(206, 140, 140, 0.9);
+        box-shadow: 0 12px 30px rgba(0,0,0,.18);
+        backdrop-filter: blur(8px);
+        z-index: 10000;
+        display: none; /* hidden by default, tampil saat user klik FAB */
+      }
+      @media (prefers-color-scheme: dark){
+        .audio-panel{ background: rgba(25,25,28,.85); color:#f0f0f0; }
+      }
+
+      .audio-header{
+        display:flex; align-items:center; justify-content:space-between; margin-bottom:8px;
+      }
+      .audio-header .title{ font-weight:600; font-size:14px; opacity:.9 }
+      .close-btn{
+        border:0; background:transparent; cursor:pointer; font-size:14px;
+        width:28px; height:28px; border-radius:8px; color:inherit;
+      }
+      .close-btn:hover{ background: rgba(0,0,0,.06); }
+
+      .audio-controls{ display:flex; align-items:center; gap:10px; }
+      .play-btn{
+        width:42px; height:42px; border-radius:12px; border:0; cursor:pointer;
+        background:#e5a3ff; color:#fff; font-size:16px; flex:0 0 auto;
+        box-shadow:0 6px 16px rgba(13,110,253,.35);
+      }
+      .play-btn:hover{ filter: brightness(1.06); }
+
+      .timeline{ flex:1 1 auto; min-width:0; }
+      #seek{
+        width:100%; appearance:none; height:6px; border-radius:999px; background:#e6e6e6; outline:none;
+      }
+      #seek::-webkit-slider-thumb{
+        appearance:none; width:14px; height:14px; border-radius:999px; background:#e5a3ff; cursor:pointer;
+        box-shadow:0 2px 6px rgba(13,110,253,.4);
+      }
+      .time{ font-size:12px; margin-top:4px; opacity:.75; display:flex; gap:4px; }
+
+      .volume{ display:flex; align-items:center; gap:6px; flex:0 0 auto; }
+      .mute-btn{
+        border:0; background:transparent; cursor:pointer; font-size:16px; width:32px; height:32px; border-radius:8px;
+      }
+      .mute-btn:hover{ background: rgba(0,0,0,.06); }
+      #vol{
+        width:86px; appearance:none; height:6px; border-radius:999px; background:#e6e6e6; outline:none;
+      }
+      #vol::-webkit-slider-thumb{
+        appearance:none; width:14px; height:14px; border-radius:999px; background:#e5a3ff; cursor:pointer;
+        box-shadow:0 2px 6px rgba(13,110,253,.4);
+      }
     </style>
   </head>
   <body>
@@ -211,6 +277,32 @@
         >
       </div>
       <div class="container">
+        <div class="audio-fab" id="audioFab" title="Show player">🎵</div>
+        <div class="audio-panel" id="audioPanel" aria-hidden="true">
+          <div class="audio-header">
+            <span class="title">Now Playing</span>
+            <button class="close-btn" id="hidePanel" aria-label="Hide player">✕</button>
+          </div>
+
+          <div class="audio-controls">
+            <button class="play-btn" id="playPause" aria-label="Play/Pause">▶</button>
+            <div class="timeline">
+              <input type="range" id="seek" min="0" max="100" value="0" step="0.1" aria-label="Seek">
+              <div class="time">
+                <span id="current">0:00</span> / <span id="duration">0:00</span>
+              </div>
+            </div>
+            <div class="volume">
+              <button class="mute-btn" id="mute" aria-label="Mute/Unmute">🔊</button>
+              <input type="range" id="vol" min="0" max="1" step="0.01" value="1" aria-label="Volume">
+            </div>
+          </div>
+
+          <!-- Audio tag tanpa native controls -->
+          <audio id="bgAudio" preload="metadata">
+            <source src="/music/music.mp3" type="audio/mpeg">
+          </audio>
+        </div>
         <h1>🎂 Selamat Ulang Tahun Asha !</h1>
         <div style="display: flex; gap: 10px; align-items: center;">
           <img src="/picture/asha.png" 
@@ -276,7 +368,7 @@
         <button class="btn-special" onclick="showPopup('popup1')">🎁 Lihat Pesan Spesial</button>
       </div>
 
-      <div style="height: 800px;" style="display: none;"></div>
+      <!-- <div style="height: 800px;" style="display: none;"></div> -->
 
       <div class="container" style="display: none;">
         <div class="credit">Dibuat spesial dengan cinta dan Roblox 🎮</div>
@@ -336,6 +428,79 @@
           flowersContainer.innerHTML = '';
         }, 6000);
       }
+
+      const panel   = document.getElementById('audioPanel');
+      const fab     = document.getElementById('audioFab');
+      const hideBtn = document.getElementById('hidePanel');
+
+      const audio   = document.getElementById('bgAudio');
+      const playBtn = document.getElementById('playPause');
+      const seek    = document.getElementById('seek');
+      const curT    = document.getElementById('current');
+      const durT    = document.getElementById('duration');
+      const muteBtn = document.getElementById('mute');
+      const vol     = document.getElementById('vol');
+
+      // Toggle panel show/hide
+      function showPanel(){ panel.style.display = 'block'; fab.style.opacity = '0'; fab.style.pointerEvents = 'none'; panel.setAttribute('aria-hidden','false'); }
+      function hidePanel(){ panel.style.display = 'none'; fab.style.opacity = '1';   fab.style.pointerEvents = 'auto'; panel.setAttribute('aria-hidden','true'); }
+
+      fab.addEventListener('click', showPanel);
+      hideBtn.addEventListener('click', hidePanel);
+
+      // Utilities
+      const fmt = s => {
+        s = Math.floor(s||0);
+        const m = Math.floor(s/60); const r = s%60;
+        return `${m}:${String(r).padStart(2,'0')}`;
+      };
+
+      // Init duration after metadata loaded
+      audio.addEventListener('loadedmetadata', () => {
+        durT.textContent = fmt(audio.duration);
+      });
+
+      // Play/pause
+      playBtn.addEventListener('click', async () => {
+        if (audio.paused) {
+          try { await audio.play(); } catch(e){ /* autoplay may be blocked */ }
+        } else {
+          audio.pause();
+        }
+      });
+
+      // Reflect state on button
+      audio.addEventListener('play',  () => playBtn.textContent = '⏸');
+      audio.addEventListener('pause', () => playBtn.textContent = '▶');
+
+      // Update progress + time
+      audio.addEventListener('timeupdate', () => {
+        if (!isNaN(audio.duration)) {
+          seek.value = (audio.currentTime / audio.duration) * 100;
+          curT.textContent = fmt(audio.currentTime);
+        }
+      });
+
+      // Seek
+      seek.addEventListener('input', () => {
+        if (!isNaN(audio.duration)) {
+          audio.currentTime = (seek.value / 100) * audio.duration;
+        }
+      });
+
+      // Volume + mute
+      vol.addEventListener('input', () => {
+        audio.volume = vol.value;
+        audio.muted  = (audio.volume === 0);
+        muteBtn.textContent = audio.muted ? '🔇' : '🔊';
+      });
+      muteBtn.addEventListener('click', () => {
+        audio.muted = !audio.muted;
+        muteBtn.textContent = audio.muted ? '🔇' : '🔊';
+      });
+
+      // Optional: buka panel otomatis saat user pertama play via FAB (kalau ingin auto-show)
+      // showPanel();
     </script>
   </body>
 </html>
